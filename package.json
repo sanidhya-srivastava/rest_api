@@ -22,8 +22,10 @@
   "description": "simple api to know how to build a backend",
   "main": "server.js",
   "dependencies": {
+    "compression": "^1.8.1",
     "esbuild": "^0.25.8",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
     "express-yup-middleware": "^2.0.0",
     "helmet": "^8.1.0",
     "http-status-codes": "^2.3.0",
