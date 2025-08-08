@@ -1,7 +1,10 @@
 import {StatusCodes} from 'http-status-codes';
+import pino from 'pino';
 
 import userService from "../services/user.service.js";
 
+
+const logger= pino();
 
 const STATUS={
     success: 'OK',
@@ -9,7 +12,7 @@ const STATUS={
 };
 
 /**
- * retrives all users
+ * retrieves all users
  * @param req
  * @param res
  * @returns {*}
@@ -19,6 +22,7 @@ const getAllUsers = (req,res)=>{
     const users= userService.getAllUsers();
 
     if(users.length){
+        logger.info(`retrieving all user `);
         return res.status(StatusCodes.OK).send(users);
     }
     return res.status(StatusCodes.NOT_FOUND).send({
@@ -28,7 +32,7 @@ const getAllUsers = (req,res)=>{
 }
 
 /**
- * retrives a the user of specified id
+ * retrieves the user of specified id
  * @param req
  * @param res
  * @returns {*}
@@ -39,6 +43,7 @@ const getUser = (req,res)=>{
     const user= userService.getUser(id);
 
     if(user){
+        logger.info(`retrieving user ${id}`);
         return res.status(StatusCodes.OK).send({
             status :STATUS.success,
             user,
@@ -62,6 +67,8 @@ const addUser =  (req,res)=> {
 
     const addedUser = userService.addUser(user);
 
+    logger.info('creating a user')
+
     return res.status(StatusCodes.CREATED).send({
         status: STATUS.success,
         message: addedUser,
@@ -82,6 +89,7 @@ const updateUser = (req,res)=> {
     const updatedUser = userService.updateUser(id, user);
 
     if (updatedUser) {
+        logger.info(`updating user ${id}`);
         return res.status(StatusCodes.OK).send({
             status: STATUS.success,
             user: updatedUser,
@@ -105,6 +113,7 @@ const removeUser = (req,res)=> {
     const id=parseInt(params.id,10);
     const user= userService.getUser(id);
     if(user){
+        logger.info(`deleting user no ${id} `);
         userService.removeUser(id);
         return res.status(StatusCodes.OK).send({
             status: STATUS.success,
